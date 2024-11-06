@@ -354,10 +354,9 @@ public class Menu {
 	private void obtenerOfertasTotalesJson() {
 		Gson gson = new Gson();
         try {
+        	if (ArchivosJson.getCarpeta()!=null) {
         	//Ejemplo de ruta de archivo valida: "src/espias.json"
             FileReader reader = new FileReader("/jsons/ofertasTotales.json");
-            if(reader != null) {
-            
 
             // Utiliza JsonParser para analizar el JSON
             JsonParser parser = new JsonParser();
@@ -370,10 +369,11 @@ public class Menu {
                 Oferta oferta = gson.fromJson(element, Oferta.class);
                 ofertasTotales.add(oferta);
             	}
-            }
+            
             // Cierra el FileReader
             reader.close();
-        } catch (Exception e) {
+        } 
+        }catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -382,6 +382,7 @@ public class Menu {
 	private void obtenerOfertasSeleccionadasJson() {
 		Gson gson = new Gson();
         try {
+        	if (ArchivosJson.getCarpeta() !=null) {
         	//Ejemplo de ruta de archivo valida: "src/espias.json"
             FileReader reader = new FileReader("/jsons/ofertasSeleccionadas.json");
 
@@ -398,7 +399,8 @@ public class Menu {
             }
             // Cierra el FileReader
             reader.close();
-        } catch (Exception e) {
+        } 
+        }catch (Exception e) {
             e.printStackTrace();
         }
 	}
