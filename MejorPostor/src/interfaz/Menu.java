@@ -100,8 +100,7 @@ public class Menu {
 		
 		obtenerOfertasTotalesJson();
 		obtenerOfertasSeleccionadasJson();
-		//antes de todo, el programa va a leer los dos JSON parar guardar las ofertas en
-		//ofertasTotales y ofertasSeleccionadas para luego mostrarlo por pantalla.
+		
 		crearFrame();
 		
 		crearBotones();
@@ -135,22 +134,6 @@ public class Menu {
 		panelOfertasDia.setVisible(false);
 		frame.getContentPane().add(panelOfertasDia);
 		
-		crearLineaDeTiempo(panelOfertasDia);
-	}
-
-	private void crearLineaDeTiempo(JPanel panelOfertasDia) {
-		
-		//un metodo que obtendra los datos de las ofertas de la variable OfertasSeleccionadas
-		//para luego mostrarlo por la linea de tiempo.
-		
-		JFreeChart ofertasDia = ChartFactory.createTimeSeriesChart("Ofertas del dia", "Horas", "Monto", null);
-		
-		ChartPanel cPanel = new ChartPanel(ofertasDia);
-		cPanel.setMinimumDrawHeight(100);
-		cPanel.setMaximumDrawHeight(800);
-		cPanel.setPreferredSize(new Dimension(744, 332));
-		panelOfertasDia.add(cPanel);
-		cPanel.setLayout(null);
 	}
 
 	private void crearCampoTexto() {
@@ -226,8 +209,8 @@ public class Menu {
 				Oferta oferta = new Oferta(oferente, horaDesde, horaHasta, monto, tipoShow);
 				
 				empresa.agregar(oferta);
-				ofertasTotales.add(oferta);			//ofertasTotales.add(oferta);
-				//aca llamo al escribirJSONTotales para guardar la info de esta oferta.
+				ofertasTotales.add(oferta);	
+				
 				ArchivosJson.guardarComoJSON("ofertasTotales", ofertasTotales);
 			}
 		});
@@ -369,25 +352,21 @@ public class Menu {
 	private void obtenerOfertasTotalesJson() {
 		Gson gson = new Gson();
         try {
-        	if (ArchivosJson.getCarpeta()!=null) {
-        	//Ejemplo de ruta de archivo valida: "src/espias.json"
-            FileReader reader = new FileReader("/jsons/ofertasTotales.json");
+            FileReader reader = new FileReader("src/jsons/ofertasTotales");
 
-            // Utiliza JsonParser para analizar el JSON
             JsonParser parser = new JsonParser();
             JsonElement jsonElement = parser.parse(reader);
             JsonArray jsonArray = jsonElement.getAsJsonArray();
-
-            // Itera sobre cada elemento del array JSON
+         
             for (JsonElement element : jsonArray) {
-                // Convierte cada elemento en un objeto Coordenada
+               
                 Oferta oferta = gson.fromJson(element, Oferta.class);
                 ofertasTotales.add(oferta);
             	}
             
-            // Cierra el FileReader
+          
             reader.close();
-        } 
+         
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -407,25 +386,21 @@ public class Menu {
 	private void obtenerOfertasSeleccionadasJson() {
 		Gson gson = new Gson();
         try {
-        	if (ArchivosJson.getCarpeta() !=null) {
-        	//Ejemplo de ruta de archivo valida: "src/espias.json"
-            FileReader reader = new FileReader("/jsons/ofertasSeleccionadas.json");
-
-            // Utiliza JsonParser para analizar el JSON
+            FileReader reader = new FileReader("src/jsons/ofertasSeleccionadas");
+         
             JsonParser parser = new JsonParser();
             JsonElement jsonElement = parser.parse(reader);
             JsonArray jsonArray = jsonElement.getAsJsonArray();
 
-            // Itera sobre cada elemento del array JSON
             for (JsonElement element : jsonArray) {
-                // Convierte cada elemento en un objeto Coordenada
+               
                 Oferta oferta = gson.fromJson(element, Oferta.class);
                 ofertasSeleccionadas.add(oferta);
             }
-            // Cierra el FileReader
+          
             reader.close();
         } 
-        }catch (Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
 	}
