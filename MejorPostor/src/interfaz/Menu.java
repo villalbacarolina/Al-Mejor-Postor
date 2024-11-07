@@ -60,7 +60,7 @@ public class Menu {
 	private Set<Oferta> ofertasSeleccionadas;
 	private Empresa empresa;
 	private Solucion solucion;
-	private String fechaa;
+	private String fecha;
 
 	/**
 	 * Launch the application.
@@ -284,7 +284,7 @@ public class Menu {
 				
 				if (evt.getOldValue() != null) {
 					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-					fechaa = format.format(calendario.getCalendar().getTime());
+					fecha = format.format(calendario.getCalendar().getTime());
 				}
 			}
 		});
