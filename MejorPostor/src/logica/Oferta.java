@@ -26,7 +26,7 @@ public class Oferta {
 		
 	private void obtenerFechaManiana() {
 		 LocalDate fecha = LocalDate.now();
-		 fecha.plusDays(1);
+		 fecha = fecha.plusDays(1);
 		 _fechaManiana = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 	}
 	
