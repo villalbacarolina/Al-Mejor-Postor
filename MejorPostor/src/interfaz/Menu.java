@@ -40,6 +40,7 @@ import org.jfree.chart.JFreeChart;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 
 
 
@@ -121,7 +122,7 @@ public class Menu {
 
 	private void crearPanelOfertasTotales() {
 		panelOfertasTotales = new JPanel();
-		panelOfertasTotales.setBounds(241,0,744,665);
+		panelOfertasTotales.setBounds(241,0,744,561);
 		panelOfertasTotales.setVisible(false);
 		frame.getContentPane().add(panelOfertasTotales);
 		
@@ -287,7 +288,7 @@ public class Menu {
 				}
 			}
 		});
-		/*/
+		
 		calendario.setSundayForeground(new Color(255, 0, 0));
 		calendario.setWeekdayForeground(new Color(255, 255, 255));
 		calendario.getDayChooser().setDecorationBackgroundColor(new Color(255, 255, 255));
@@ -298,7 +299,7 @@ public class Menu {
 		calendario.getDayChooser().getDayPanel().setBackground(new Color(0, 0, 0));
 		calendario.setBounds(267, 5, 215, 153);
 		panelCalendario.add(calendario);
-		/*/
+		
 		JLabel logotipo = new JLabel("");
 		logotipo.setIcon(new ImageIcon(Menu.class.getResource("/imagen/Logotipo.png")));
 		logotipo.setBounds(55, 0, 184, 173);
