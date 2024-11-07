@@ -23,7 +23,7 @@ public class ArchivosJson {
             _carpeta.mkdirs();
         String _rutaArchivo = nombreCarpeta + File.separator + nombreArchivo;
 
-        try (FileWriter writer = new FileWriter(_rutaArchivo, true)) {
+        try (FileWriter writer = new FileWriter(_rutaArchivo)) {
             writer.write(json);
             writer.close();
             //SACAR ESTO
