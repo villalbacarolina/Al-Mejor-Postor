@@ -1,5 +1,7 @@
 package logica;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class Oferta {
@@ -10,7 +12,7 @@ public class Oferta {
 	private int cantidadDeHoras;
 	private double _monto;
 	private String _tipoShow;
-	private Calendar _fechaManiana;
+	private String _fechaManiana;
 	
 	public Oferta(String oferente, int horaDesde, int horaHasta, double monto, String tipoShow) {
 		this._oferente = oferente;
@@ -23,8 +25,9 @@ public class Oferta {
 	}
 		
 	private void obtenerFechaManiana() {
-		 _fechaManiana = Calendar.getInstance();     
-		 _fechaManiana.add(Calendar.DATE,1);
+		 LocalDate fecha = LocalDate.now();
+		 fecha.plusDays(1);
+		 _fechaManiana = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 	}
 	
 	public String getOferente() {
@@ -43,7 +46,7 @@ public class Oferta {
 		return _monto;
 	}
 
-	public Calendar getFechaManiana() {
+	public String getFechaManiana() {
 		return _fechaManiana;
 	}
 	

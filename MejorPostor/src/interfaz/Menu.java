@@ -3,7 +3,10 @@ package interfaz;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -56,6 +59,7 @@ public class Menu {
 	private Set<Oferta> ofertasSeleccionadas;
 	private Empresa empresa;
 	private Solucion solucion;
+	private String fechaa;
 
 	/**
 	 * Launch the application.
@@ -274,6 +278,16 @@ public class Menu {
 		panelCalendario.setLayout(null);
 		
 		calendario = new JCalendar();
+		calendario.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				
+				if (evt.getOldValue() != null) {
+					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+					fechaa = format.format(calendario.getCalendar().getTime());
+				}
+			}
+		});
+		/*/
 		calendario.setSundayForeground(new Color(255, 0, 0));
 		calendario.setWeekdayForeground(new Color(255, 255, 255));
 		calendario.getDayChooser().setDecorationBackgroundColor(new Color(255, 255, 255));
@@ -284,7 +298,7 @@ public class Menu {
 		calendario.getDayChooser().getDayPanel().setBackground(new Color(0, 0, 0));
 		calendario.setBounds(267, 5, 215, 153);
 		panelCalendario.add(calendario);
-		
+		/*/
 		JLabel logotipo = new JLabel("");
 		logotipo.setIcon(new ImageIcon(Menu.class.getResource("/imagen/Logotipo.png")));
 		logotipo.setBounds(55, 0, 184, 173);
@@ -377,6 +391,16 @@ public class Menu {
             e.printStackTrace();
         }
         
+	}
+	
+	private Set<Oferta> obtenerOfertaDiaSeleccionado(String fecha){
+		Set<Oferta> ret = new HashSet<Oferta>();
+		for (Oferta of : ofertasSeleccionadas) {
+			if (of.getFechaManiana().equals(fecha)) {
+				ret.add(of);
+			}
+		}
+		return ret;
 	}
 	
 	private void obtenerOfertasSeleccionadasJson() {
