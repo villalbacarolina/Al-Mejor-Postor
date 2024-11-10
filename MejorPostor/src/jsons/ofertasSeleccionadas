@@ -1,2 +1,11 @@
 [
+  {
+    "_oferente": "EMI",
+    "_horaDesde": 2,
+    "_horaHasta": 4,
+    "cantidadDeHoras": 2,
+    "_monto": 222.0,
+    "_tipoShow": "Comedia",
+    "_fechaManiana": "11/11/2024"
+  }
 ]

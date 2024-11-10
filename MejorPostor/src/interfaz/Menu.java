@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -65,7 +66,9 @@ public class Menu {
 	private Solucion solucion;
 	private String fecha;
 	private DefaultTableModel model;
-
+	private DefaultTableModel modelSeleccionadas;
+	private JButton botonAgregar;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -134,6 +137,7 @@ public class Menu {
 		scrollPane.setBounds(37, 46, 698, 408);
 		panelOfertasTotales.add(scrollPane);
 		
+		//SE CREA LA TABLA DE OFERTAS TOTALES
 		JTable tablaOfertasTotales = new JTable();
 		model = new DefaultTableModel();
 		tablaOfertasTotales.setModel(model);
@@ -146,11 +150,10 @@ public class Menu {
 		model.addColumn("fecha");
 		tablaOfertasTotales.setVisible(true);
 		scrollPane.setViewportView(tablaOfertasTotales);
-		//se creara un JTable que mostrara las ofertas de ofertasTotales.
+		
 	}
 
-	public void llenarTabla() {
-		
+	public void llenarTablaOfertasTotales() {
 		Set<Oferta>listaOfertas = ofertasTotales;
 		if (listaOfertas!=null) {
 		for(Oferta of : listaOfertas) {
@@ -160,19 +163,55 @@ public class Menu {
 			fila[2]=of.getHoraDesde();
 			fila[3]=of.getHoraHasta();
 			fila[4]=of.getTipoShow();
-			fila[5]="hla";	
+			fila[5]=fecha;	
 			
 			model.addRow(fila);
 			}
-		System.out.println("ofertas totales null");
+		}
+	}
+	
+	public void llenarTablaOfertasSeleccionadas() {
+		Set<Oferta>listaOfertas = obtenerOfertaDiaSeleccionado(fecha);
+		if (listaOfertas!=null) {
+		for(Oferta of : listaOfertas) {
+			Object[]fila = new Object[6];
+			fila[0]=of.getOferente();
+			fila[1]=of.getMonto();
+			fila[2]=of.getHoraDesde();
+			fila[3]=of.getHoraHasta();
+			fila[4]=of.getTipoShow();
+			fila[5]=fecha;	
+			
+			modelSeleccionadas.addRow(fila);
+			}
 		}
 	}
 	
 	private void crearPanelGrafico() {
 		panelOfertasDia = new JPanel();
-		panelOfertasDia.setBounds(240, 162, 744, 342);
+		panelOfertasDia.setBounds(240, 162, 744, 350);
 		panelOfertasDia.setVisible(false);
 		frame.getContentPane().add(panelOfertasDia);
+		
+		
+		JScrollPane scrollPaneUno = new JScrollPane();
+		scrollPaneUno.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneUno.setBounds(37, 46, 698, 408);
+		panelOfertasDia.add(scrollPaneUno);
+		
+		//SE CREA LA TABLA DE OFERTAS TOTALES
+		JTable tablaOfertasSeleccionadas = new JTable();
+		modelSeleccionadas = new DefaultTableModel();
+		tablaOfertasSeleccionadas.setModel(modelSeleccionadas);
+		
+		modelSeleccionadas.addColumn("oferente");
+		modelSeleccionadas.addColumn("monto");
+		modelSeleccionadas.addColumn("desde");
+		modelSeleccionadas.addColumn("hasta");
+		modelSeleccionadas.addColumn("categoria");
+		modelSeleccionadas.addColumn("fecha");
+		tablaOfertasSeleccionadas.setVisible(true);
+		scrollPaneUno.setViewportView(tablaOfertasSeleccionadas);
 		
 	}
 
@@ -228,11 +267,14 @@ public class Menu {
 					ofertasSeleccionadas.add(oferta);
 				}
 				ArchivosJson.guardarComoJSON("ofertasSeleccionadas", ofertasSeleccionadas);
+				//BLOQUEA EL BOTON AGREGAR
+				botonAgregar.setEnabled(false);
+				
 			}
 		});
 		
 		
-		JButton botonAgregar = new JButton("Agregar Oferta");
+		botonAgregar = new JButton("Agregar Oferta");
 		botonAgregar.setBounds(55, 368, 121, 23);
 		frame.getContentPane().add(botonAgregar);
 		botonAgregar.addActionListener(new ActionListener() {
@@ -252,6 +294,12 @@ public class Menu {
 				ofertasTotales.add(oferta);	
 				
 				ArchivosJson.guardarComoJSON("ofertasTotales", ofertasTotales);
+				JOptionPane.showMessageDialog(null, "Se agrego la oferta correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				//LIMPIA LOS CAMPOS
+				campoOferente.setText("");
+				campoMonto.setText("");
+				campoHoraDesde.setSelectedIndex(-1);
+				campoHoraHasta.setSelectedIndex(-1);
 			}
 		});
 		
@@ -277,8 +325,7 @@ public class Menu {
 					panelCalendario.setVisible(false);
 					panelOfertasTotales.setVisible(true);
 					model.setRowCount(0);
-
-					llenarTabla();
+					llenarTablaOfertasTotales();
 			}
 		});
 	}
@@ -311,6 +358,8 @@ public class Menu {
 				if (evt.getOldValue() != null) {
 					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 					fecha = format.format(calendario.getCalendar().getTime());
+					modelSeleccionadas.setRowCount(0);
+					llenarTablaOfertasSeleccionadas();
 				}
 			}
 		});
@@ -395,7 +444,7 @@ public class Menu {
 	private void obtenerOfertasTotalesJson() {
 		Gson gson = new Gson();
         try {
-            FileReader reader = new FileReader("/jsons/ofertasTotales");
+            FileReader reader = new FileReader("src/jsons/ofertasTotales");
 
             JsonParser parser = new JsonParser();
             
@@ -430,7 +479,7 @@ public class Menu {
 	private void obtenerOfertasSeleccionadasJson() {
 		Gson gson = new Gson();
         try {
-            FileReader reader = new FileReader("/jsons/ofertasSeleccionadas");
+            FileReader reader = new FileReader("src/jsons/ofertasSeleccionadas");
          
             JsonParser parser = new JsonParser();
             JsonElement jsonElement = parser.parse(reader);
