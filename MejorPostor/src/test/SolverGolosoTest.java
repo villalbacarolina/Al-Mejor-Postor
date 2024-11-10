@@ -27,7 +27,7 @@ public class SolverGolosoTest {
 	}
 
 	@Test
-	public void resolverPorMonto() {	
+	public void resolverPorMontoTest() {	
 		SolverGoloso solver = new SolverGoloso(inicializar(), new ComparadorMonto());
 		Solucion sol = solver.resolver();
 		
@@ -36,7 +36,7 @@ public class SolverGolosoTest {
 	}
 	
 	@Test
-	public void resolverPorBeneficio() {
+	public void resolverPorBeneficioTest() {
 		SolverGoloso solver = new SolverGoloso(inicializar(), new ComparadorPorBeneficio());
 		
 		Solucion sol = solver.resolver();
@@ -48,7 +48,7 @@ public class SolverGolosoTest {
 	//Casos borde
 	
 	@Test
-	public void hayUnaSolaOferta() {
+	public void hayUnaSolaOfertaTest() {
 	    Empresa emp = new Empresa();
 	    emp.agregar(new Oferta("Ana", 0, 3, 500, "Drama"));
 	    
@@ -60,7 +60,7 @@ public class SolverGolosoTest {
 	}
 
 	@Test
-	public void ofertasConMismasCondiciones() {
+	public void ofertasConMismasCondicionesTest() {
 	    Empresa emp = new Empresa();
 	    emp.agregar(new Oferta("Jose", 1, 4, 400, "Cine"));
 	    emp.agregar(new Oferta("Maria", 1, 4, 400, "Cine"));
@@ -76,7 +76,7 @@ public class SolverGolosoTest {
 	}
 
 	@Test
-	public void noHayOfertas() {
+	public void noHayOfertasTest() {
 	    Empresa emp = new Empresa();
 	    SolverGoloso solver = new SolverGoloso(emp, new ComparadorMonto());
 	    Solucion sol = solver.resolver();

@@ -1,20 +1,2 @@
 [
-  {
-    "_oferente": "esta",
-    "_horaDesde": 2,
-    "_horaHasta": 5,
-    "cantidadDeHoras": 3,
-    "_monto": 1000.0,
-    "_tipoShow": "Comedia",
-    "_fechaManiana": "10/11/2024"
-  },
-  {
-    "_oferente": "yesta",
-    "_horaDesde": 18,
-    "_horaHasta": 23,
-    "cantidadDeHoras": 5,
-    "_monto": 1000.0,
-    "_tipoShow": "Comedia",
-    "_fechaManiana": "10/11/2024"
-  }
 ]
