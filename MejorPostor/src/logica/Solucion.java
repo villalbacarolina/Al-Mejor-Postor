@@ -22,16 +22,14 @@ public class Solucion {
 	}
 	
 	public double montoTotal() {
-		double ret = 0;
-		for(Oferta oferta : _ofertas) {
-			ret += oferta.getMonto();
-		}
-		return ret;
+		double montoTotal = 0;
+		for(Oferta oferta : _ofertas)
+			montoTotal += oferta.getMonto();
+		return montoTotal;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Oferta> getOfertas()
-	{
+	public ArrayList<Oferta> getOfertas(){
 		return (ArrayList<Oferta>) _ofertas.clone();
 	}
 	
@@ -50,8 +48,8 @@ public class Solucion {
 			int horaHastaSeleccionada = ofertaSeleccionada.getHoraHasta();
 			
 			if((horaDesde > horaDesdeSeleccionada && horaDesde < horaHastaSeleccionada) ||
-				(horaHasta > horaDesdeSeleccionada && horaHasta < horaHastaSeleccionada) ||
-			horaDesde < horaDesdeSeleccionada && horaHasta > horaHastaSeleccionada){
+			   (horaHasta > horaDesdeSeleccionada && horaHasta < horaHastaSeleccionada) ||
+			    horaDesde < horaDesdeSeleccionada && horaHasta > horaHastaSeleccionada){
 				return false;
 			}
 			else if(horaDesde == horaDesdeSeleccionada && horaHasta == horaHastaSeleccionada) {

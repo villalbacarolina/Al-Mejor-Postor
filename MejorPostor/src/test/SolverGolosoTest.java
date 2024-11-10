@@ -12,39 +12,78 @@ import logica.Solucion;
 import logica.SolverGoloso;
 
 public class SolverGolosoTest {
+	
+	private Empresa inicializar() {
+		Empresa emp = new Empresa();
+		
+		emp.agregar(new Oferta("Juan", 0, 2, 300,"Comedia"));
+		emp.agregar(new Oferta("Pablo", 3, 5, 700,"Musical"));
+		emp.agregar(new Oferta("Pedro", 2, 6, 1000,"Teatro"));
+		emp.agregar(new Oferta("Pepe", 7, 10, 800,"Comedia"));
+		emp.agregar(new Oferta("Carlos", 12, 15, 100,"Charla"));
+		emp.agregar(new Oferta("Fran", 14, 16, 2000,"Teatro"));
+		
+		return emp;
+	}
 
 	@Test
-	public void resolverPorMonto() {
-		
-		SolverGoloso solver = new SolverGoloso(ejemplo(), new ComparadorMonto());
-		
+	public void resolverPorMonto() {	
+		SolverGoloso solver = new SolverGoloso(inicializar(), new ComparadorMonto());
 		Solucion sol = solver.resolver();
+		
 		assertEquals(4, sol.tamanio());
 		assertEquals(4100, (int)sol.montoTotal());
 	}
 	
 	@Test
 	public void resolverPorBeneficio() {
-		
-		SolverGoloso solver = new SolverGoloso(ejemplo(), new ComparadorPorBeneficio());
+		SolverGoloso solver = new SolverGoloso(inicializar(), new ComparadorPorBeneficio());
 		
 		Solucion sol = solver.resolver();
-		
-		
+				
 		assertEquals(4, sol.tamanio());
 		assertEquals(3800, (int)sol.montoTotal());
 	}
 	
-	private Empresa ejemplo() {
-		
-		Empresa ret = new Empresa();
-		ret.agregar(new Oferta("Juan", 0, 2, 300,"Comedia"));
-		ret.agregar(new Oferta("Pablo", 3, 5, 700,"Musical"));
-		ret.agregar(new Oferta("Pedro", 2, 6, 1000,"Teatro"));
-		ret.agregar(new Oferta("Pepe", 7, 10, 800,"Comedia"));
-		ret.agregar(new Oferta("Carlos", 12, 15, 100,"Charla"));
-		ret.agregar(new Oferta("Fran", 14, 16, 2000,"Teatro"));
-		
-		return ret;
+	//Casos borde
+	
+	@Test
+	public void hayUnaSolaOferta() {
+	    Empresa emp = new Empresa();
+	    emp.agregar(new Oferta("Ana", 0, 3, 500, "Drama"));
+	    
+	    SolverGoloso solver = new SolverGoloso(emp, new ComparadorMonto());
+	    Solucion solucion = solver.resolver();
+	    
+	    assertEquals(1, solucion.tamanio());
+	    assertEquals(500, (int) solucion.montoTotal());
 	}
+
+	@Test
+	public void ofertasConMismasCondiciones() {
+	    Empresa emp = new Empresa();
+	    emp.agregar(new Oferta("Jose", 1, 4, 400, "Cine"));
+	    emp.agregar(new Oferta("Maria", 1, 4, 400, "Cine"));
+	    emp.agregar(new Oferta("Luis", 1, 4, 400, "Cine"));
+	    
+	    SolverGoloso solver = new SolverGoloso(emp, new ComparadorMonto());
+	    Solucion sol = solver.resolver();
+	    
+	    //Solo debería elegir una oferta ya que todas se superponen.
+	    assertEquals(1, sol.tamanio());
+	    //La oferta elegida será siempre la primera en la lista ordenada.
+	    assertEquals(400, (int) sol.montoTotal());
+	}
+
+	@Test
+	public void noHayOfertas() {
+	    Empresa emp = new Empresa();
+	    SolverGoloso solver = new SolverGoloso(emp, new ComparadorMonto());
+	    Solucion sol = solver.resolver();
+	    
+	    assertEquals(0, sol.tamanio());
+	    assertEquals(0, (int) sol.montoTotal());
+	}
+	
+
 }
