@@ -1,18 +1,11 @@
 [
   {
-    "_oferente": "dede",
-    "_horaDesde": 2,
-    "_horaHasta": 7,
-    "cantidadDeHoras": 5,
-    "_monto": 3333.0,
+    "_oferente": "2313",
+    "_horaDesde": 1,
+    "_horaHasta": 3,
+    "cantidadDeHoras": 2,
+    "_monto": 3232.0,
     "_tipoShow": "Comedia",
-    "_fechaManiana": {
-      "year": 2024,
-      "month": 10,
-      "dayOfMonth": 7,
-      "hourOfDay": 13,
-      "minute": 46,
-      "second": 45
-    }
+    "_fechaManiana": "11/11/2024"
   }
 ]

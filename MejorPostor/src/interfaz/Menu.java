@@ -33,12 +33,15 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 
@@ -61,6 +64,7 @@ public class Menu {
 	private Empresa empresa;
 	private Solucion solucion;
 	private String fecha;
+	private DefaultTableModel model;
 
 	/**
 	 * Launch the application.
@@ -125,9 +129,45 @@ public class Menu {
 		panelOfertasTotales.setVisible(false);
 		frame.getContentPane().add(panelOfertasTotales);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(37, 46, 698, 408);
+		panelOfertasTotales.add(scrollPane);
+		
+		JTable tablaOfertasTotales = new JTable();
+		model = new DefaultTableModel();
+		tablaOfertasTotales.setModel(model);
+		
+		model.addColumn("oferente");
+		model.addColumn("monto");
+		model.addColumn("desde");
+		model.addColumn("hasta");
+		model.addColumn("categoria");
+		model.addColumn("fecha");
+		tablaOfertasTotales.setVisible(true);
+		scrollPane.setViewportView(tablaOfertasTotales);
 		//se creara un JTable que mostrara las ofertas de ofertasTotales.
 	}
 
+	public void llenarTabla() {
+		
+		Set<Oferta>listaOfertas = ofertasTotales;
+		if (listaOfertas!=null) {
+		for(Oferta of : listaOfertas) {
+			Object[]fila = new Object[6];
+			fila[0]=of.getOferente();
+			fila[1]=of.getMonto();
+			fila[2]=of.getHoraDesde();
+			fila[3]=of.getHoraHasta();
+			fila[4]=of.getTipoShow();
+			fila[5]="hla";	
+			
+			model.addRow(fila);
+			}
+		System.out.println("ofertas totales null");
+		}
+	}
+	
 	private void crearPanelGrafico() {
 		panelOfertasDia = new JPanel();
 		panelOfertasDia.setBounds(240, 162, 744, 342);
@@ -236,6 +276,9 @@ public class Menu {
 					panelOfertasDia.setVisible(false);
 					panelCalendario.setVisible(false);
 					panelOfertasTotales.setVisible(true);
+					model.setRowCount(0);
+
+					llenarTabla();
 			}
 		});
 	}
@@ -352,9 +395,10 @@ public class Menu {
 	private void obtenerOfertasTotalesJson() {
 		Gson gson = new Gson();
         try {
-            FileReader reader = new FileReader("src/jsons/ofertasTotales");
+            FileReader reader = new FileReader("/jsons/ofertasTotales");
 
             JsonParser parser = new JsonParser();
+            
             JsonElement jsonElement = parser.parse(reader);
             JsonArray jsonArray = jsonElement.getAsJsonArray();
          
@@ -386,7 +430,7 @@ public class Menu {
 	private void obtenerOfertasSeleccionadasJson() {
 		Gson gson = new Gson();
         try {
-            FileReader reader = new FileReader("src/jsons/ofertasSeleccionadas");
+            FileReader reader = new FileReader("/jsons/ofertasSeleccionadas");
          
             JsonParser parser = new JsonParser();
             JsonElement jsonElement = parser.parse(reader);
