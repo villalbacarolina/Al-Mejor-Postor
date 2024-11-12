@@ -26,11 +26,8 @@ public class ArchivosJson {
         try (FileWriter writer = new FileWriter(_rutaArchivo)) {
             writer.write(json);
             writer.close();
-            //SACAR ESTO
-            System.out.println("Archivo JSON guardado en: " + _rutaArchivo);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error al guardar el archivo JSON.");
         }
     }
 	

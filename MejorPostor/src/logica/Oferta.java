@@ -2,7 +2,7 @@ package logica;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+import java.util.Objects;
 
 public class Oferta {
 	
@@ -28,6 +28,21 @@ public class Oferta {
 		 LocalDate fecha = LocalDate.now();
 		 fecha = fecha.plusDays(1);
 		 _fechaManiana = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+	}
+	
+	public boolean equals(Oferta otro) {
+		if(this == otro) return true;  //Si son el mismo objeto.
+		
+		return _oferente.equals(otro.getOferente()) &&
+				_tipoShow.equals(otro.getTipoShow()) &&
+				_fechaManiana.equals(otro.getFechaManiana()) &&
+				Integer.compare(_horaHasta, otro.getHoraHasta()) == 0 &&
+				Integer.compare(_horaDesde, otro.getHoraDesde()) == 0 &&
+				Double.compare(_monto, otro.getMonto()) == 0;
+	}
+	
+	public int hashCode() {
+		return Objects.hash(_oferente, _tipoShow, _fechaManiana, _horaDesde, _horaHasta, _monto);
 	}
 	
 	public String getOferente() {

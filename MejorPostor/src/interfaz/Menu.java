@@ -7,7 +7,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,21 +31,18 @@ import utils.ArchivosJson;
 
 import javax.swing.ImageIcon;
 import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 
@@ -65,6 +63,7 @@ public class Menu {
 	private Empresa empresa;
 	private Solucion solucion;
 	private String fecha;
+	private boolean diaTermino;
 	private DefaultTableModel model;
 	private DefaultTableModel modelSeleccionadas;
 	private JButton botonAgregar;
@@ -98,6 +97,7 @@ public class Menu {
 		ofertasSeleccionadas = new HashSet<Oferta>();
 		empresa = new Empresa();
 		solucion = new Solucion();
+		diaTermino = false;
 	}
 
 	/**
@@ -107,6 +107,8 @@ public class Menu {
 		
 		obtenerOfertasTotalesJson();
 		obtenerOfertasSeleccionadasJson();
+		
+		verificarDiaTermino();
 		
 		crearFrame();
 		
@@ -126,8 +128,22 @@ public class Menu {
 		
 	}
 
+	private void verificarDiaTermino() {
+		LocalDate ret = LocalDate.now();
+		ret = ret.plusDays(1);
+		String fechaVerificar = ret.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		
+		for(Oferta of : ofertasSeleccionadas) {
+			if(of.getFechaManiana().equals(fechaVerificar)) {
+				diaTermino = true;
+				return;
+			}
+		}
+	}
+
 	private void crearPanelOfertasTotales() {
 		panelOfertasTotales = new JPanel();
+		panelOfertasTotales.setBackground(new Color(192, 192, 192));
 		panelOfertasTotales.setBounds(241,0,744,561);
 		panelOfertasTotales.setVisible(false);
 		frame.getContentPane().add(panelOfertasTotales);
@@ -139,21 +155,23 @@ public class Menu {
 		
 		//SE CREA LA TABLA DE OFERTAS TOTALES
 		JTable tablaOfertasTotales = new JTable();
+		tablaOfertasTotales.setForeground(new Color(255, 255, 255));
+		tablaOfertasTotales.setBackground(new Color(0, 0, 0));
 		model = new DefaultTableModel();
 		tablaOfertasTotales.setModel(model);
 		
-		model.addColumn("oferente");
-		model.addColumn("monto");
-		model.addColumn("desde");
-		model.addColumn("hasta");
-		model.addColumn("categoria");
-		model.addColumn("fecha");
+		model.addColumn("Oferente");
+		model.addColumn("Monto");
+		model.addColumn("Desde");
+		model.addColumn("Hasta");
+		model.addColumn("Categoria");
+		model.addColumn("Fecha");
 		tablaOfertasTotales.setVisible(true);
 		scrollPane.setViewportView(tablaOfertasTotales);
 		
 	}
 
-	public void llenarTablaOfertasTotales() {
+	private void llenarTablaOfertasTotales() {
 		Set<Oferta>listaOfertas = ofertasTotales;
 		if (listaOfertas!=null) {
 		for(Oferta of : listaOfertas) {
@@ -170,7 +188,7 @@ public class Menu {
 		}
 	}
 	
-	public void llenarTablaOfertasSeleccionadas() {
+	private void llenarTablaOfertasSeleccionadas() {
 		Set<Oferta>listaOfertas = obtenerOfertaDiaSeleccionado(fecha);
 		if (listaOfertas!=null) {
 		for(Oferta of : listaOfertas) {
@@ -180,7 +198,7 @@ public class Menu {
 			fila[2]=of.getHoraDesde();
 			fila[3]=of.getHoraHasta();
 			fila[4]=of.getTipoShow();
-			fila[5]=fecha;	
+			fila[5]=of.getFechaManiana();
 			
 			modelSeleccionadas.addRow(fila);
 			}
@@ -189,6 +207,7 @@ public class Menu {
 	
 	private void crearPanelGrafico() {
 		panelOfertasDia = new JPanel();
+		panelOfertasDia.setBackground(new Color(192, 192, 192));
 		panelOfertasDia.setBounds(240, 162, 744, 350);
 		panelOfertasDia.setVisible(false);
 		frame.getContentPane().add(panelOfertasDia);
@@ -201,15 +220,17 @@ public class Menu {
 		
 		//SE CREA LA TABLA DE OFERTAS TOTALES
 		JTable tablaOfertasSeleccionadas = new JTable();
+		tablaOfertasSeleccionadas.setForeground(new Color(255, 255, 255));
+		tablaOfertasSeleccionadas.setBackground(new Color(0, 0, 0));
 		modelSeleccionadas = new DefaultTableModel();
 		tablaOfertasSeleccionadas.setModel(modelSeleccionadas);
 		
-		modelSeleccionadas.addColumn("oferente");
-		modelSeleccionadas.addColumn("monto");
-		modelSeleccionadas.addColumn("desde");
-		modelSeleccionadas.addColumn("hasta");
-		modelSeleccionadas.addColumn("categoria");
-		modelSeleccionadas.addColumn("fecha");
+		modelSeleccionadas.addColumn("Oferente");
+		modelSeleccionadas.addColumn("Monto");
+		modelSeleccionadas.addColumn("Desde");
+		modelSeleccionadas.addColumn("Hasta");
+		modelSeleccionadas.addColumn("Categoria");
+		modelSeleccionadas.addColumn("Fecha");
 		tablaOfertasSeleccionadas.setVisible(true);
 		scrollPaneUno.setViewportView(tablaOfertasSeleccionadas);
 		
@@ -217,11 +238,29 @@ public class Menu {
 
 	private void crearCampoTexto() {
 		campoMonto = new JTextField();
+		campoMonto.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(!Character.isDigit(e.getKeyChar())) {
+					e.consume();
+				}
+				super.keyTyped(e);
+			}
+		});
 		campoMonto.setColumns(10);
 		campoMonto.setBounds(118, 244, 112, 20);
 		frame.getContentPane().add(campoMonto);
 		
 		campoOferente = new JTextField();
+		campoOferente.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(!Character.isAlphabetic(e.getKeyChar()) && !Character.isWhitespace(e.getKeyChar())) {
+					e.consume();
+				}
+				super.keyTyped(e);
+			}
+		});
 		campoOferente.setBounds(118, 97, 112, 20);
 		frame.getContentPane().add(campoOferente);
 		campoOferente.setColumns(10);
@@ -259,20 +298,25 @@ public class Menu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				ComparadorMonto comparador = new ComparadorMonto();
-				SolverGoloso solver = new SolverGoloso(empresa, comparador);
-				solucion = solver.resolver();
-				
-				for(Oferta oferta : solucion.getOfertas()) {
-					ofertasSeleccionadas.add(oferta);
+				if(!diaTermino) {
+					ComparadorMonto comparador = new ComparadorMonto();
+					SolverGoloso solver = new SolverGoloso(empresa, comparador);
+					solucion = solver.resolver();
+					
+					for(Oferta oferta : solucion.getOfertas()) {
+						ofertasSeleccionadas.add(oferta);
+					}
+					ArchivosJson.guardarComoJSON("ofertasSeleccionadas", ofertasSeleccionadas);
+					//BLOQUEA EL BOTON AGREGAR
+					botonAgregar.setEnabled(false);
+					diaTermino = true;
 				}
-				ArchivosJson.guardarComoJSON("ofertasSeleccionadas", ofertasSeleccionadas);
-				//BLOQUEA EL BOTON AGREGAR
-				botonAgregar.setEnabled(false);
-				
+				else {
+					JOptionPane.showMessageDialog(frame, "El dia ya termino, espere hasta mañana para seleccionar nuevas ofertas",
+													"Aviso", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
-		
 		
 		botonAgregar = new JButton("Agregar Oferta");
 		botonAgregar.setBounds(55, 368, 121, 23);
@@ -280,26 +324,61 @@ public class Menu {
 		botonAgregar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String oferente = campoOferente.getText();
-				int horaDesde = campoHoraDesde.getSelectedIndex();
-				int horaHasta = campoHoraHasta.getSelectedIndex();
+				if(!diaTermino) {
+					if(verificarDatos()) {
+						String oferente = campoOferente.getText();
+						int horaDesde = campoHoraDesde.getSelectedIndex();
+						int horaHasta = campoHoraHasta.getSelectedIndex();
+						
+						double monto = Double.parseDouble(campoMonto.getText());
+						String tipoShow = (String) campoTipoShow.getSelectedItem();
+						
+						Oferta oferta = new Oferta(oferente, horaDesde, horaHasta, monto, tipoShow);
+						
+						if(!verificarOfertaRepetida(oferta)) {
+							empresa.agregar(oferta);
+							ofertasTotales.add(oferta);	
+							
+							ArchivosJson.guardarComoJSON("ofertasTotales", ofertasTotales);
+							JOptionPane.showMessageDialog(frame, "Se agrego la oferta correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+							//LIMPIA LOS CAMPOS
+							campoOferente.setText("");
+							campoMonto.setText("");
+							campoHoraDesde.setSelectedIndex(-1);
+							campoHoraHasta.setSelectedIndex(-1);
+						}
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(frame, "El dia ya termino, espere hasta mañana para agregar mas ofertas",
+													"Aviso", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+			private boolean verificarDatos() {
+				if(campoOferente.getText().isEmpty()  || campoOferente.getText().charAt(0) == ' ') {
+					JOptionPane.showMessageDialog(frame, "Nombre del oferente invalido", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					return false;
+				}
+				if(!(campoHoraDesde.getSelectedIndex() < campoHoraHasta.getSelectedIndex())) {
+					JOptionPane.showMessageDialog(frame, "Horario invalido", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					return false;
+				}
+				if(campoMonto.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "Monto Invalido", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+					return false;
+				}
+				return true;
+			}
+			private boolean verificarOfertaRepetida(Oferta oferta) {
 				
-				//antes de hacer el parse, chequear que lo ingresado sea un double.
-				double monto = Double.parseDouble(campoMonto.getText());
-				String tipoShow = (String) campoTipoShow.getSelectedItem();
-				
-				Oferta oferta = new Oferta(oferente, horaDesde, horaHasta, monto, tipoShow);
-				
-				empresa.agregar(oferta);
-				ofertasTotales.add(oferta);	
-				
-				ArchivosJson.guardarComoJSON("ofertasTotales", ofertasTotales);
-				JOptionPane.showMessageDialog(null, "Se agrego la oferta correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-				//LIMPIA LOS CAMPOS
-				campoOferente.setText("");
-				campoMonto.setText("");
-				campoHoraDesde.setSelectedIndex(-1);
-				campoHoraHasta.setSelectedIndex(-1);
+				for(Oferta of : empresa.getOfertas()) {
+					if(oferta.equals(of)) {
+						JOptionPane.showMessageDialog(frame, "La oferta ingresada ya existe", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+						return true;
+					}
+				}
+				return false;
 			}
 		});
 		
@@ -441,6 +520,7 @@ public class Menu {
 		frame.getContentPane().add(textoOferente);
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void obtenerOfertasTotalesJson() {
 		Gson gson = new Gson();
         try {
@@ -476,6 +556,7 @@ public class Menu {
 		return ret;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void obtenerOfertasSeleccionadasJson() {
 		Gson gson = new Gson();
         try {
@@ -505,6 +586,7 @@ public class Menu {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Mejor Postor");
 		
 	}
 }
