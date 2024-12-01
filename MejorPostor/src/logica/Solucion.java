@@ -5,64 +5,49 @@ import java.util.ArrayList;
 public class Solucion {
 	
 	private ArrayList<Oferta> _ofertas;
+	private double _montoTotal;
 	
-	public Solucion()
-	{
+	public Solucion(){
 		_ofertas = new ArrayList<Oferta>();
 	}
 	
-	public void agregar(Oferta objeto)
-	{
-		_ofertas.add(objeto);
-	}
-
-	public int tamanio()
-	{
-		return _ofertas.size();
-	}
-	
-	public double montoTotal() {
-		double montoTotal = 0;
-		for(Oferta oferta : _ofertas)
-			montoTotal += oferta.getMonto();
-		return montoTotal;
-	}
+	//___________________________//
 	
 	@SuppressWarnings("unchecked")
 	public ArrayList<Oferta> getOfertas(){
 		return (ArrayList<Oferta>) _ofertas.clone();
 	}
 	
-	public boolean validarSuperposicion(Oferta oferta) {
+	public double getMontoTotal() {
+		return _montoTotal;
+	}
+	
+	//___________________________//
+	
+	public void agregar(Oferta oferta){
+		_ofertas.add(oferta);
+		_montoTotal += oferta.getMonto();
+	}
+	
+	public int tamanio(){
+		return _ofertas.size();
+	}
+	
+	public boolean noSeSuperponeConNingunaOferta(Oferta oferta) {
+		if(_ofertas.isEmpty()) 
+			return true;	
 		
-		if(_ofertas.isEmpty()) {
-			return true;
-		}
-		
-		int horaDesde = oferta.getHoraDesde();
-		int horaHasta = oferta.getHoraHasta();
-		
-		for(Oferta ofertaSeleccionada : _ofertas) {
-			
-			int horaDesdeSeleccionada = ofertaSeleccionada.getHoraDesde();
-			int horaHastaSeleccionada = ofertaSeleccionada.getHoraHasta();
-			
-			if((horaDesde > horaDesdeSeleccionada && horaDesde < horaHastaSeleccionada) ||
-			   (horaHasta > horaDesdeSeleccionada && horaHasta < horaHastaSeleccionada) ||
-			    horaDesde < horaDesdeSeleccionada && horaHasta > horaHastaSeleccionada){
+		for(Oferta otraOferta : _ofertas) 
+			if (!oferta.noSeSuperpone(otraOferta))
 				return false;
-			}
-			else if(horaDesde == horaDesdeSeleccionada && horaHasta == horaHastaSeleccionada) {
-				return false;
-			}
-		}
+		
 		return true;
 	}
 
 	@Override
-	public String toString() 
-	{
+	public String toString() {
 		String ret = ""; 
+		
 		for (Oferta oferta: _ofertas)
 			ret = ret + " " + oferta.getOferente() + " " + oferta.getHoraDesde()
 			 + " " + oferta.getHoraHasta() + " " + oferta.getMonto() + "\n";

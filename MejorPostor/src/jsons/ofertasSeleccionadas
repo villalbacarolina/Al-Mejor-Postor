@@ -1,2 +1,11 @@
 [
+  {
+    "_oferente": "Jorge",
+    "_horaDesde": 5,
+    "_horaHasta": 8,
+    "cantidadDeHoras": 3,
+    "_monto": 2982.0,
+    "_tipoShow": "Comedia",
+    "_fechaManiana": "31/11/2024"
+  }
 ]

@@ -3,7 +3,7 @@ package utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Set;
+import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,7 +13,7 @@ public class ArchivosJson {
 	private static File _carpeta;
 	private static String _rutaArchivo;
 	
-	public static <T> void guardarComoJSON(String nombreArchivo, Set<T> set) {
+	public static <T> void guardarComoJSON(String nombreArchivo, ArrayList<T> set) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(set);
 

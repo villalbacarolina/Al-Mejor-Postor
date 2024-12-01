@@ -1,36 +1,55 @@
 package logica;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
+
+import utils.InfoOfertas;
 
 public class Empresa {
 	
-	private ArrayList<Oferta> _ofertas;
+	private static Instancia instancia = new Instancia();
+	private static Solucion solucion = new Solucion();
 	
-	public Empresa () {
-		_ofertas = new ArrayList<Oferta>();
+	public static void guardar(Oferta oferta) {
+		instancia.agregar(oferta);
 	}
 
-	
-	public void agregar(Oferta oferta)
-	{
-		_ofertas.add(oferta);
+	public static boolean estaRepetida(Oferta oferta) {
+		return instancia.estaRepetida(oferta);
 	}
 	
-	
-	
-//	public int getTamano()
-//	{
-//		return _ofertas.size();
-//	}
-	
-	@SuppressWarnings("unchecked")
-	public ArrayList<Oferta> getOfertas()
-	{
-		return (ArrayList<Oferta>) _ofertas.clone();
+	public static void seleccionarOfertasPorMonto() {
+		Comparator<Oferta> comparadorPorMonto = (o1, o2) -> Double.compare(o2.getMonto(), o1.getMonto());
+		SolverGoloso solver = new SolverGoloso(instancia, comparadorPorMonto);
+		solucion = solver.resolver();
 	}
-
-	public Oferta getOferta(int i) {
+	
+	public static void seleccionarOfertasPorBeneficio() {
+		Comparator<Oferta> comparadorPorBeneficio = (o1, o2) -> {
+		    double cocienteDos = o2.getMonto() / o2.getCantidadDeHoras();
+		    double cocienteUno = o1.getMonto() / o1.getCantidadDeHoras();
+		    return Double.compare(cocienteDos, cocienteUno);
+		};
+		SolverGoloso solver = new SolverGoloso(instancia, comparadorPorBeneficio);
+		solucion = solver.resolver();
+	}
+	
+	public static boolean diaTerminado() {
+		LocalDate ret = LocalDate.now();
+		ret = ret.plusDays(1);
+		String fechaVerificar = ret.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		
-		return _ofertas.get(i);
+		for(Oferta of : InfoOfertas.getOfertasSeleccionadas()) 
+			if(of.getFechaManiana().equals(fechaVerificar))
+				return true;
+		
+		return false;
 	}
+
+	public static ArrayList<Oferta> getOfertaSolucion() {
+		return solucion.getOfertas();
+	}
+
 }

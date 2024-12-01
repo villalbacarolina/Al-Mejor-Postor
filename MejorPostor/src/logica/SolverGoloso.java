@@ -4,35 +4,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+//Solver=Solucionador
 public class SolverGoloso {
 	
-	private Empresa _empresa;
+	private Instancia _instancia; 
 	private Comparator<Oferta> _comparador;
 	
-	public SolverGoloso(Empresa empresa, Comparator<Oferta> comparador)
-	{
-		_empresa = empresa;
+	public SolverGoloso(Instancia instancia, Comparator<Oferta> comparador){
+		_instancia = instancia;
 		_comparador = comparador;
 	}
 	
-	public Solucion resolver()
-	{
-		Solucion ret = new Solucion();
-		for(Oferta oferta : ofertasOrdenadas()) {
-			
-			if(ret.validarSuperposicion(oferta)) {
-				ret.agregar(oferta);
-			}
-		}
-		return ret;
-	}
-
-	private ArrayList<Oferta> ofertasOrdenadas()
-	{
-		ArrayList<Oferta> ret = _empresa.getOfertas();
-		Collections.sort(ret, _comparador);
+	private ArrayList<Oferta> ofertasDeManianaOrdenadasPorComparador(){
+		ArrayList<Oferta> ofertasOrdenadas = _instancia.getOfertas();
+		Collections.sort(ofertasOrdenadas, _comparador);
 		
-		return ret;
+		return ofertasOrdenadas;
+	}
+	
+	public Solucion resolver(){
+		Solucion ofertasSeleccionadas = new Solucion();
+		
+		for(Oferta oferta : ofertasDeManianaOrdenadasPorComparador())
+			if(ofertasSeleccionadas.noSeSuperponeConNingunaOferta(oferta))
+				ofertasSeleccionadas.agregar(oferta);
+		
+		return ofertasSeleccionadas;
 	}
 
 }
