@@ -1,7 +1,6 @@
 package interfaz;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -296,7 +295,6 @@ public class Menu {
 	
 	private void crearCamposTextoTabla() {
 		
-		JTextField campoTexto = new JTextField();
 		campoMonto = new JTextField();
 		campoMonto.addKeyListener(new KeyAdapter() {
 			@Override
@@ -344,7 +342,7 @@ public class Menu {
 	}
 		
 	private void llenarTablaOfertasSeleccionadas() {
-		ArrayList<Oferta>listaOfertas = obtenerOfertasDelDia(fecha);
+		ArrayList<Oferta>listaOfertas = InfoOfertas.obtenerOfertasDelDia(fecha);
 		if (listaOfertas!=null) {
 		for(Oferta of : listaOfertas) {
 			Object[]fila = new Object[6];
@@ -493,13 +491,5 @@ public class Menu {
 	    label.setForeground(Color.WHITE);
 	    label.setBounds(x, y, 89, 14);
 	    frame.getContentPane().add(label);
-	}
-	
-	private ArrayList<Oferta> obtenerOfertasDelDia(String fecha){
-		ArrayList<Oferta> ofertasDelDia = new ArrayList<Oferta>();
-		for (Oferta oferta : InfoOfertas.getOfertasSeleccionadas()) 
-			if (oferta.getFechaManiana().equals(fecha)) 
-				ofertasDelDia.add(oferta);
-		return ofertasDelDia;
 	}
 }

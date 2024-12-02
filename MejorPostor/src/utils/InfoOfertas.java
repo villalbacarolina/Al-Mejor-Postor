@@ -77,6 +77,13 @@ public class InfoOfertas {
             e.printStackTrace();
         }
 	}
+	public static ArrayList<Oferta> obtenerOfertasDelDia(String fecha){
+		ArrayList<Oferta> ofertasDelDia = new ArrayList<Oferta>();
+		for (Oferta oferta : InfoOfertas.getOfertasSeleccionadas()) 
+			if (oferta.getFechaManiana().equals(fecha)) 
+				ofertasDelDia.add(oferta);
+		return ofertasDelDia;
+	}
 	
 	public static void guardarOfertasTotales (Oferta oferta) {
 		

@@ -14,7 +14,6 @@ import logica.SolverGoloso;
 
 public class SolverGolosoTest {
 	
-	private Instancia empresa;
 	private Comparator<Oferta> _comparadorPorMonto;
 	private Comparator<Oferta> _comparadorPorBeneficio;
 	
