@@ -1,11 +1,29 @@
 [
   {
-    "_oferente": "Jorge",
-    "_horaDesde": 5,
-    "_horaHasta": 8,
+    "_oferente": "rere",
+    "_horaDesde": 8,
+    "_horaHasta": 11,
     "cantidadDeHoras": 3,
-    "_monto": 2982.0,
+    "_monto": 323232.0,
     "_tipoShow": "Comedia",
-    "_fechaManiana": "31/11/2024"
+    "_fechaManiana": "03/12/2024"
+  },
+  {
+    "_oferente": "ee",
+    "_horaDesde": 1,
+    "_horaHasta": 3,
+    "cantidadDeHoras": 2,
+    "_monto": 32323.0,
+    "_tipoShow": "Comedia",
+    "_fechaManiana": "03/12/2024"
+  },
+  {
+    "_oferente": "ewewe",
+    "_horaDesde": 4,
+    "_horaHasta": 6,
+    "cantidadDeHoras": 2,
+    "_monto": 3232.0,
+    "_tipoShow": "Comedia",
+    "_fechaManiana": "03/12/2024"
   }
 ]

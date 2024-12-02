@@ -93,27 +93,19 @@ public class Menu {
 		
 		InfoOfertas.obtenerOfertasTotalesJson();
 		InfoOfertas.obtenerOfertasSeleccionadasJson();
-		
 		diaTermino = Empresa.diaTerminado();
-		
 		crearVentana();
-		
 		crearBotones();
 		crearComboBoxFormulario();
-		crearCamposTextoTabla();
-		
+		crearCamposTextoTabla();		
 		crearTablaDeOfertas();
-		crearTextoIndicacionesFormulario();
-		
-		agregarFondo();
-		
-		crearPanelOfertas();
-		
+		crearTextoIndicacionesFormulario();		
+		agregarFondo();		
+		crearPanelOfertas();		
 		crearParteCalendario();
 		crearPanelGrafico();
 		llenarTablaOfertasTotales();
 	}
-	
 	
 	//_________________________VENTANA_______________________________//
 	
@@ -154,6 +146,14 @@ public class Menu {
 	
 	
 	private void crearComboBoxFormulario() {
+		crearComboBox();
+		for(int i = 0; i <= 24; i++) {		
+			campoHoraDesde.addItem(i);
+			campoHoraHasta.addItem(i);
+		}
+	}
+
+	private void crearComboBox() {
 		String[] shows = {"Comedia", "Musical", "Charla", "Teatro","Magia","Academicos", "Politicos"};
 		
 		campoTipoShow = new JComboBox<String>(shows);
@@ -170,11 +170,6 @@ public class Menu {
 		campoHoraDesde.setMaximumRowCount(25);
 		campoHoraDesde.setBounds(118, 141, 112, 22);
 		frame.getContentPane().add(campoHoraDesde);
-		
-		for(int i = 0; i <= 24; i++) {		
-			campoHoraDesde.addItem(i);
-			campoHoraHasta.addItem(i);
-		}
 	}	
 	
 	// _ _ _ _ _ _ _ _ _ _ _ACCIONES FORMULARIO_ _ _ _ _ _ _ _ _ _ _ //	
@@ -258,19 +253,15 @@ public class Menu {
 	}
 	
 	private void crearPanelGrafico() {
-		panelOfertasDia = new JPanel();
-		panelOfertasDia.setBackground(new Color(192, 192, 192));
-		panelOfertasDia.setBounds(240, 162, 744, 350);
-		panelOfertasDia.setVisible(false);
-		frame.getContentPane().add(panelOfertasDia);
 		
-		
-		JScrollPane scrollPaneUno = new JScrollPane();
-		scrollPaneUno.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPaneUno.setBounds(37, 46, 698, 408);
-		panelOfertasDia.add(scrollPaneUno);
-		
+		crearPanelOfertasDia();
+		JScrollPane scrollPaneUno = crearScrollPaneUno();
 		//SE CREA LA TABLA DE OFERTAS TOTALES
+		crearTablaOfertasSeleccionadas(scrollPaneUno);
+		
+	}
+
+	private void crearTablaOfertasSeleccionadas(JScrollPane scrollPaneUno) {
 		JTable tablaOfertasSeleccionadas = new JTable();
 		tablaOfertasSeleccionadas.setForeground(new Color(255, 255, 255));
 		tablaOfertasSeleccionadas.setBackground(new Color(0, 0, 0));
@@ -285,7 +276,22 @@ public class Menu {
 		modelSeleccionadas.addColumn("Fecha");
 		tablaOfertasSeleccionadas.setVisible(true);
 		scrollPaneUno.setViewportView(tablaOfertasSeleccionadas);
-		
+	}
+
+	private JScrollPane crearScrollPaneUno() {
+		JScrollPane scrollPaneUno = new JScrollPane();
+		scrollPaneUno.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneUno.setBounds(37, 46, 698, 408);
+		panelOfertasDia.add(scrollPaneUno);
+		return scrollPaneUno;
+	}
+
+	private void crearPanelOfertasDia() {
+		panelOfertasDia = new JPanel();
+		panelOfertasDia.setBackground(new Color(192, 192, 192));
+		panelOfertasDia.setBounds(240, 162, 744, 350);
+		panelOfertasDia.setVisible(false);
+		frame.getContentPane().add(panelOfertasDia);
 	}
 	
 	private void crearCamposTextoTabla() {
@@ -411,13 +417,21 @@ public class Menu {
 	//________________________CALENDARIO_____________________________//	
 
 	private void crearParteCalendario() {
-		panelCalendario = new JPanel();
-		panelCalendario.setBackground(new Color(128, 128, 128));
-		panelCalendario.setBounds(240, 0, 744, 163);
-		panelCalendario.setVisible(false);
-		frame.getContentPane().add(panelCalendario);
-		panelCalendario.setLayout(null);
+		crearPanelCalendario();
+		crearCalendario();
+		JLabel logotipo = new JLabel("");
+		logotipo.setIcon(new ImageIcon(Menu.class.getResource("/imagen/Logotipo.png")));
+		logotipo.setBounds(55, 0, 184, 173);
+		panelCalendario.add(logotipo);
 		
+		JLabel titulosCeldaeleccioneDia = new JLabel("Seleccione un dia para ver sus ofertas");
+		titulosCeldaeleccioneDia.setBounds(484, 74, 260, 14);
+		panelCalendario.add(titulosCeldaeleccioneDia);
+		titulosCeldaeleccioneDia.setForeground(new Color(255, 255, 255));
+		titulosCeldaeleccioneDia.setHorizontalAlignment(SwingConstants.CENTER);
+	}
+
+	private void crearCalendario() {
 		calendario = new JCalendar();
 		calendario.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -441,17 +455,15 @@ public class Menu {
 		calendario.getDayChooser().getDayPanel().setBackground(new Color(0, 0, 0));
 		calendario.setBounds(267, 5, 215, 153);
 		panelCalendario.add(calendario);
-		
-		JLabel logotipo = new JLabel("");
-		logotipo.setIcon(new ImageIcon(Menu.class.getResource("/imagen/Logotipo.png")));
-		logotipo.setBounds(55, 0, 184, 173);
-		panelCalendario.add(logotipo);
-		
-		JLabel titulosCeldaeleccioneDia = new JLabel("Seleccione un dia para ver sus ofertas");
-		titulosCeldaeleccioneDia.setBounds(484, 74, 260, 14);
-		panelCalendario.add(titulosCeldaeleccioneDia);
-		titulosCeldaeleccioneDia.setForeground(new Color(255, 255, 255));
-		titulosCeldaeleccioneDia.setHorizontalAlignment(SwingConstants.CENTER);
+	}
+
+	private void crearPanelCalendario() {
+		panelCalendario = new JPanel();
+		panelCalendario.setBackground(new Color(128, 128, 128));
+		panelCalendario.setBounds(240, 0, 744, 163);
+		panelCalendario.setVisible(false);
+		frame.getContentPane().add(panelCalendario);
+		panelCalendario.setLayout(null);
 	}
 	
 	private void mostrarPanelCalendario() {
