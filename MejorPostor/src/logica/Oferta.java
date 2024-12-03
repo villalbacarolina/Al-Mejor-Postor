@@ -1,5 +1,7 @@
 package logica;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Oferta {
@@ -12,14 +14,14 @@ public class Oferta {
 	private String _tipoShow;
 	private String _fechaManiana;
 	
-	public Oferta(String oferente, int horaDesde, int horaHasta, double monto, String tipoShow, String fechaManiana) {
+	public Oferta(String oferente, int horaDesde, int horaHasta, double monto, String tipoShow) {
 		this._oferente = oferente;
 		this._horaDesde = horaDesde;
 		this._horaHasta = horaHasta;
 		this.cantidadDeHoras=horaHasta-horaDesde;
 		this._monto = monto;
 		this._tipoShow = tipoShow;
-		this._fechaManiana = fechaManiana;
+		_fechaManiana = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 	}
 	
 	public boolean noSeSuperpone(Oferta otraOferta) {

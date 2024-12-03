@@ -7,5 +7,32 @@
     "_monto": 97.0,
     "_tipoShow": "Charla",
     "_fechaManiana": "04/12/2024"
+  },
+  {
+    "_oferente": "Lucrecia",
+    "_horaDesde": 5,
+    "_horaHasta": 13,
+    "cantidadDeHoras": 8,
+    "_monto": 12999.0,
+    "_tipoShow": "Teatro",
+    "_fechaManiana": "04/12/2024"
+  },
+  {
+    "_oferente": "Patrix",
+    "_horaDesde": 11,
+    "_horaHasta": 19,
+    "cantidadDeHoras": 8,
+    "_monto": 300928.0,
+    "_tipoShow": "Musical",
+    "_fechaManiana": "04/12/2024"
+  },
+  {
+    "_oferente": "Marco",
+    "_horaDesde": 19,
+    "_horaHasta": 23,
+    "cantidadDeHoras": 4,
+    "_monto": 23999.0,
+    "_tipoShow": "Comedia",
+    "_fechaManiana": "04/12/2024"
   }
 ]

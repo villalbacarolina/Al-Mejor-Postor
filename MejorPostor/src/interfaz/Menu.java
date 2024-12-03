@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +19,9 @@ import com.toedter.calendar.JCalendar;
 import logica.Empresa;
 import logica.Oferta;
 
-import utils.ArchivosJson;
 import utils.InfoOfertas;
+import utils.OfertaDTO;
+import utils.OfertaService;
 
 import javax.swing.ImageIcon;
 import java.awt.Color;
@@ -172,7 +171,7 @@ public class Menu {
 	
 	// _ _ _ _ _ _ _ _ _ _ _ACCIONES FORMULARIO_ _ _ _ _ _ _ _ _ _ _ //	
 	
-	private boolean verificarDatosFormulario() {
+	private boolean datosFormularioCorrectos() {
 	    if (campoOferente.getText().isEmpty() || campoOferente.getText().charAt(0) == ' ') {
 	        mostrarMensaje("Nombre del oferente inválido.");
 	        return false;
@@ -196,14 +195,14 @@ public class Menu {
 	    model.setRowCount(0);
 	}
 
-	private Oferta crearOfertaDesdeFormulario() {
+	private OfertaDTO crearOfertaDTODesdeFormulario() {
 	    String oferente = campoOferente.getText();
 	    int horaDesde = campoHoraDesde.getSelectedIndex();
 	    int horaHasta = campoHoraHasta.getSelectedIndex();
 	    double monto = Double.parseDouble(campoMonto.getText());
 	    String tipoShow = (String) campoTipoShow.getSelectedItem();
-	    String fechaManiana = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-	    return new Oferta(oferente, horaDesde, horaHasta, monto, tipoShow, fechaManiana);
+	    
+	    return new OfertaDTO(oferente, horaDesde, horaHasta, monto, tipoShow);
 	}
 	
 	private void mostrarMensaje(String mensaje) {
@@ -378,12 +377,12 @@ public class Menu {
 	//_ _ _ _ _ _ _ _ _ _ _ _ACCIONES BOTONES_ _ _ _ _ _ _ _ _ _ _ _//	
 
 	private void terminarDia() {
+	    OfertaService ofertaService = new OfertaService();
 	    if (!diaTermino) {
-	        Empresa.seleccionarOfertasPorMonto();
-	        Empresa.getOfertaSolucion().forEach(oferta -> InfoOfertas.guardarOfertasSeleccionadas(oferta));
-	        ArchivosJson.guardarComoJSON("ofertasSeleccionadas", InfoOfertas.getOfertasSeleccionadas());
+	        ofertaService.terminarDia();
 	        botonAgregar.setEnabled(false);
 	        diaTermino = true;
+	        mostrarMensaje("Acciones realizadas exitosamente.");
 	    } else {
 	        mostrarMensaje("El día ya terminó, espere hasta mañana para agregar más ofertas y reservar las más convenientes.");
 	    }
@@ -391,12 +390,13 @@ public class Menu {
 
 	private void agregarOferta() {
 	    if (!diaTermino) {
-	        if (verificarDatosFormulario()) {
-	            Oferta oferta = crearOfertaDesdeFormulario();
-	            if (!Empresa.estaRepetida(oferta)) {
-	                Empresa.guardar(oferta);
-	                InfoOfertas.guardarOfertasTotales(oferta);
-	                ArchivosJson.guardarComoJSON("ofertasTotales", InfoOfertas.getOfertasTotales());
+	        if (datosFormularioCorrectos()) {
+	            OfertaDTO ofertaDTO = crearOfertaDTODesdeFormulario();
+
+	            OfertaService ofertaService = new OfertaService();
+	            boolean ofertaAgregada = ofertaService.agregarOferta(ofertaDTO);
+
+	            if (ofertaAgregada) {
 	                mostrarMensaje("Se agregó la oferta correctamente.");
 	                limpiarCamposFormulario();
 	                llenarTablaOfertasTotales();

@@ -18,17 +18,17 @@ public class SuperposicionTest {
     
     @Before 
     public void inicializar() throws Exception {
-        mismoHorario1 = new Oferta("Pedro", 2, 6, 1000, "Teatro","10/4/2024");
-        mismoHorario2 = new Oferta("Lucas", 2, 6, 800, "Teatro","10/4/2024");
+        mismoHorario1 = new Oferta("Pedro", 2, 6, 1000, "Teatro");
+        mismoHorario2 = new Oferta("Lucas", 2, 6, 800, "Teatro");
         
-        horarioDentroDelOtro1 = new Oferta("Pedro", 4, 6, 1, "Teatro","10/4/2024");
-        horarioDentroDelOtro2 = new Oferta("Lucas", 2, 8, 1, "Teatro","10/4/2024");
+        horarioDentroDelOtro1 = new Oferta("Pedro", 4, 6, 1, "Teatro");
+        horarioDentroDelOtro2 = new Oferta("Lucas", 2, 8, 1, "Teatro");
         
-        horarioTerminaDentroDelOtro1 = new Oferta("Pedro", 5, 10, 1, "Teatro","10/4/2024");
-        horarioTerminaDentroDelOtro2 = new Oferta("Lucas", 1, 8, 1, "Teatro","10/4/2024");
+        horarioTerminaDentroDelOtro1 = new Oferta("Pedro", 5, 10, 1, "Teatro");
+        horarioTerminaDentroDelOtro2 = new Oferta("Lucas", 1, 8, 1, "Teatro");
         
-        horarioEmpiezaDentroDelOtro1 = new Oferta("Pedro", 1, 10, 1, "Teatro","10/4/2024");
-        horarioEmpiezaDentroDelOtro2 = new Oferta("Lucas", 5, 15, 1, "Teatro","10/4/2024");
+        horarioEmpiezaDentroDelOtro1 = new Oferta("Pedro", 1, 10, 1, "Teatro");
+        horarioEmpiezaDentroDelOtro2 = new Oferta("Lucas", 5, 15, 1, "Teatro");
     }
 
     @Test
@@ -55,11 +55,11 @@ public class SuperposicionTest {
     
     @Test
     public void sinSuperposicionTest() {
-    	Oferta oferta1 = new Oferta("Carlos", 2, 5, 1000, "Teatro","10/4/2024");
-        Oferta oferta2 = new Oferta("Laura", 7, 9, 600, "Danza","10/4/2024");
+    	Oferta oferta1 = new Oferta("Carlos", 2, 5, 1000, "Teatro");
+        Oferta oferta2 = new Oferta("Laura", 7, 9, 600, "Danza");
         
-    	Oferta ofertaConFinIdenticoAInicio = new Oferta("Carlos", 1, 5, 1000, "Teatro","10/4/2024");
-        Oferta ofertaConInicioIdenticoAFin = new Oferta("Laura", 5, 10, 600, "Danza","10/4/2024");
+    	Oferta ofertaConFinIdenticoAInicio = new Oferta("Carlos", 1, 5, 1000, "Teatro");
+        Oferta ofertaConInicioIdenticoAFin = new Oferta("Laura", 5, 10, 600, "Danza");
         
         
         assertTrue(oferta1.noSeSuperpone(oferta2));

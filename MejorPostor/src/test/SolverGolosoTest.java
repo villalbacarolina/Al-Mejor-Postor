@@ -31,12 +31,12 @@ public class SolverGolosoTest {
 	public Instancia inicializar() {
 		Instancia empresa = new Instancia();
 		
-		empresa.agregar(new Oferta("Juan", 0, 2, 300,"Comedia","10/4/2024"));
-		empresa.agregar(new Oferta("Pablo", 3, 5, 700,"Musical","10/4/2024"));
-		empresa.agregar(new Oferta("Pedro", 2, 6, 1000,"Teatro","10/4/2024"));
-		empresa.agregar(new Oferta("Pepe", 7, 10, 800,"Comedia","10/4/2024"));
-		empresa.agregar(new Oferta("Carlos", 12, 15, 100,"Charla","10/4/2024"));
-		empresa.agregar(new Oferta("Fran", 14, 16, 2000,"Teatro","10/4/2024"));
+		empresa.agregar(new Oferta("Juan", 0, 2, 300,"Comedia"));
+		empresa.agregar(new Oferta("Pablo", 3, 5, 700,"Musical"));
+		empresa.agregar(new Oferta("Pedro", 2, 6, 1000,"Teatro"));
+		empresa.agregar(new Oferta("Pepe", 7, 10, 800,"Comedia"));
+		empresa.agregar(new Oferta("Carlos", 12, 15, 100,"Charla"));
+		empresa.agregar(new Oferta("Fran", 14, 16, 2000,"Teatro"));
 		
 		return empresa;
 	}
@@ -65,7 +65,7 @@ public class SolverGolosoTest {
 	@Test
 	public void hayUnaSolaOfertaTest() {
 	    Instancia empresa = new Instancia();
-	    empresa.agregar(new Oferta("Ana", 0, 3, 500, "Drama","10/4/2024"));
+	    empresa.agregar(new Oferta("Ana", 0, 3, 500, "Drama"));
 	    
 	    SolverGoloso solver = new SolverGoloso(empresa, _comparadorPorMonto);
 	    Solucion solucion = solver.resolver();
@@ -77,9 +77,9 @@ public class SolverGolosoTest {
 	@Test
 	public void ofertasConMismasCondicionesTest() {
 	    Instancia empresa = new Instancia();
-	    empresa.agregar(new Oferta("Jose", 1, 4, 400, "Cine","10/4/2024"));
-	    empresa.agregar(new Oferta("Maria", 1, 4, 400, "Cine","10/4/2024"));
-	    empresa.agregar(new Oferta("Luis", 1, 4, 400, "Cine","10/4/2024"));
+	    empresa.agregar(new Oferta("Jose", 1, 4, 400, "Cine"));
+	    empresa.agregar(new Oferta("Maria", 1, 4, 400, "Cine"));
+	    empresa.agregar(new Oferta("Luis", 1, 4, 400, "Cine"));
 	    
 	    SolverGoloso solver = new SolverGoloso(empresa, _comparadorPorMonto);
 	    Solucion sol = solver.resolver();
