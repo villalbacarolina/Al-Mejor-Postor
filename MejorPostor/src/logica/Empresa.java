@@ -37,12 +37,12 @@ public class Empresa {
 	}
 	
 	public static boolean diaTerminado() {
-		LocalDate ret = LocalDate.now();
-		ret = ret.plusDays(1);
-		String fechaVerificar = ret.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		LocalDate hoy = LocalDate.now();
+		LocalDate maniana = hoy.plusDays(1);
+		String fechaManiana = maniana.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		
 		for(Oferta of : InfoOfertas.getOfertasSeleccionadas()) 
-			if(of.getFechaManiana().equals(fechaVerificar))
+			if(of.getFechaManiana().equals(fechaManiana))
 				return true;
 		
 		return false;
