@@ -1,2 +1,11 @@
 [
+  {
+    "_oferente": "Mandarina",
+    "_horaDesde": 4,
+    "_horaHasta": 5,
+    "cantidadDeHoras": 1,
+    "_monto": 97.0,
+    "_tipoShow": "Charla",
+    "_fechaManiana": "04/12/2024"
+  }
 ]

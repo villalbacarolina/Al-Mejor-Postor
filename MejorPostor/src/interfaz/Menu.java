@@ -95,7 +95,7 @@ public class Menu {
 		diaTermino = Empresa.diaTerminado();
 		crearVentana();
 		crearBotones();
-		crearComboBoxFormulario();
+		crearComboBoxesFormulario();
 		crearCamposTextoTabla();		
 		crearTablaDeOfertas();
 		crearTextoIndicacionesFormulario();		
@@ -142,34 +142,33 @@ public class Menu {
 		textoInformacion.setBounds(28, 33, 220, 14);
 		frame.getContentPane().add(textoInformacion);
 	}
-	
-	
-	private void crearComboBoxFormulario() {
-		crearComboBox();
-		for(int i = 0; i <= 24; i++) {		
-			campoHoraDesde.addItem(i);
-			campoHoraHasta.addItem(i);
-		}
+
+	private void crearComboBoxes() {
+	    campoTipoShow = crearComboBox(new String[]{"Comedia", "Musical", "Charla", "Teatro", "Magia", "Academicos", "Politicos"}, 
+	                                  118, 287, 112, 22, 7);
+	    campoHoraDesde = crearComboBox(new Integer[0], 118, 141, 112, 22, 25);
+	    campoHoraHasta = crearComboBox(new Integer[0], 118, 192, 112, 22, 25);
 	}
 
-	private void crearComboBox() {
-		String[] shows = {"Comedia", "Musical", "Charla", "Teatro","Magia","Academicos", "Politicos"};
-		
-		campoTipoShow = new JComboBox<String>(shows);
-		campoTipoShow.setMaximumRowCount(7);
-		campoTipoShow.setBounds(118, 287, 112, 22);
-		frame.getContentPane().add(campoTipoShow);
-		
-		campoHoraHasta = new JComboBox<Integer>();
-		campoHoraHasta.setMaximumRowCount(25);
-		campoHoraHasta.setBounds(118, 192, 112, 22);
-		frame.getContentPane().add(campoHoraHasta);
-		
-		campoHoraDesde = new JComboBox<Integer>();
-		campoHoraDesde.setMaximumRowCount(25);
-		campoHoraDesde.setBounds(118, 141, 112, 22);
-		frame.getContentPane().add(campoHoraDesde);
-	}	
+	private <T> JComboBox<T> crearComboBox(T[] items, int x, int y, int width, int height, int maxRows) {
+	    JComboBox<T> comboBox = new JComboBox<>(items);
+	    comboBox.setMaximumRowCount(maxRows);
+	    comboBox.setBounds(x, y, width, height);
+	    frame.getContentPane().add(comboBox);
+	    return comboBox;
+	}
+	
+	private void crearComboBoxesFormulario() {
+	    crearComboBoxes();
+	    agregarHorasComboBox(campoHoraDesde, 0, 24);
+	    agregarHorasComboBox(campoHoraHasta, 0, 24);
+	}
+
+	private void agregarHorasComboBox(JComboBox<Integer> comboBox, int inicio, int fin) {
+	    for (int i = inicio; i <= fin; i++) 
+	        comboBox.addItem(i);
+	}
+	
 	
 	// _ _ _ _ _ _ _ _ _ _ _ACCIONES FORMULARIO_ _ _ _ _ _ _ _ _ _ _ //	
 	
